@@ -26,33 +26,38 @@ class Data extends Model
      * @param string $number
      */
     public static function scrape(string $number, int $session_id) {
-        $base = self::getRoute();
-        $curl = curl_init();
-        $keyword = base64_encode($number."validmenodagk");
-        curl_setopt_array($curl, array(
-            CURLOPT_URL => $base.'/names',
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => '',
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 0,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => 'POST',
-            CURLOPT_POSTFIELDS => 'keyword=ZXl3b3JkMTY1OTIyOTg4NzY2NA%3D%3D'.$keyword.'&type=1&code=kw&lang=en&showSpam=0&version=29',
-            CURLOPT_HTTPHEADER => array(
-                'UserAgent: iPhone CFNetwork Darwin IchIJe',
-                'User-Agent: iPhone CFNetwork Darwin IchIJe',
-                'Accept: iPhone CFNetwork Darwin IchIJe',
-                'TE: gzip, deflate; q=0.5',
-                'Host: '.parse_url($base)['host'],
-                'Content-Length: 100',
-                'Content-Type: application/x-www-form-urlencoded'
-            ),
-        ));
+        try {
+            $base = self::getRoute();
+            $curl = curl_init();
+            $keyword = base64_encode($number."validmenodagk");
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => $base.'/names',
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => '',
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 0,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => 'POST',
+                CURLOPT_POSTFIELDS => 'keyword=ZXl3b3JkMTY1OTIyOTg4NzY2NA%3D%3D'.$keyword.'&type=1&code=kw&lang=en&showSpam=0&version=29',
+                CURLOPT_HTTPHEADER => array(
+                    'UserAgent: iPhone CFNetwork Darwin IchIJe',
+                    'User-Agent: iPhone CFNetwork Darwin IchIJe',
+                    'Accept: iPhone CFNetwork Darwin IchIJe',
+                    'TE: gzip, deflate; q=0.5',
+                    'Host: '.parse_url($base)['host'],
+                    'Content-Length: 100',
+                    'Content-Type: application/x-www-form-urlencoded'
+                ),
+            ));
 
-        $response = curl_exec($curl);
+            $response = curl_exec($curl);
 
-        curl_close($curl);
+            curl_close($curl);
+        } catch (\Exception $e) {
+            logger($e->getMessage());
+            echo "Errored ". $number . PHP_EOL;
+        }
         $results = json_decode($response, true)['results'];
         foreach ($results as $result) {
             if ((int)$result['phone']) {

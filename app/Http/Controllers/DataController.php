@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\DataExport;
 use App\Jobs\ProcessData;
 use App\Models\Data;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class DataController extends Controller
 {
@@ -18,6 +20,17 @@ class DataController extends Controller
         //
         $data = Data::paginate(25);
         return view('data.index', compact('data'));
+    }
+
+    /**
+     * Download created resources.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function download(Request $request)
+    {
+        return Excel::download(new DataExport(), 'Data.xlsx', null, ['Id', 'Name', 'Number', 'verified', 'source', 'spam', 'session_id', 'created_at', 'updated_at']);
     }
 
     /**

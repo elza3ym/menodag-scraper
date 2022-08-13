@@ -22,6 +22,18 @@
                         @endif
                         <button type="submit" class="btn btn-{{ $isRunning ? "danger" : "primary" }} btn-rounded">{{ $isRunning ? "Stop Scraper" : "Start Scraper" }}</button>
                     </form>
+                    <form method="post" action="{{ route('session.update.pattern') }}">
+                        <div class="form-group row mt-3">
+                            @csrf
+                            <label class="col-sm-2 col-form-label" for="inputEmail3">Scraper Pattern</label>
+                            <div class="col-sm-8">
+                                <input class="form-control" type="text" name="pattern" placeholder="Pattern EX: 9*******" value="{{ $setting?->pattern ?: env('SCRAPPER_PATTERN') }}">
+                            </div>
+                            <div class="col-sm-2">
+                                <button type="submit" class="btn btn-primary btn-block">Set Pattern</button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

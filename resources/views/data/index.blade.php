@@ -11,6 +11,11 @@
     <div class="row">
         <div class="col-md-12 mb-4">
             <div class="card text-left">
+                <div class="card-header row">
+                    <div class="col-sm-12 col-md-2 offset-md-10">
+                        <a href="{{ route('data.download') }}" class="btn btn-success btn-block text-white"><i class="i-File-Excel"></i> Download Excel</a>
+                    </div>
+                </div>
                 <div class="card-body">
                     @if($data->count())
                     <div class="table-responsive">
