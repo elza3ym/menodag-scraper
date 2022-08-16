@@ -46,4 +46,15 @@ class ProcessData implements ShouldQueue
             $this->number = $this->session->current_number;
         }
     }
+
+    /**
+     * Handle a job failure.
+     *
+     * @param  \Throwable  $exception
+     * @return void
+     */
+    public function failed(Throwable $exception)
+    {
+        ProcessData::dispatch($this->session);
+    }
 }
