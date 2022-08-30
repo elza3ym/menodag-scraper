@@ -39,7 +39,7 @@ class ProcessData implements ShouldQueue
     public function handle()
     {
         //
-        while (Session::isRunning()) {
+        while (Session::isRunning($this->session->id)) {
             Data::scrape($this->number, $this->session->id);
             $this->session->current_number++;
             $this->session->save();

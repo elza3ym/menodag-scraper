@@ -13,24 +13,15 @@
             <div class="card mb-4">
                 <div class="card-body text-center">
                     <div class="avatar mb-3 text-40"><i class="i-Robot"></i></div>
-                    <h5 class="m-0">Scraper Status</h5>
-                    <p class="mt-0">{{ $isRunning ? "Running" : "Stopped" }}</p>
-                    <form action="{{ $isRunning ? route('session.stop', \App\Models\Session::getRunning()->id) : route('session.start')  }}" method="POST" >
-                        @csrf
-                        @if ($isRunning)
-                            @method('PUT')
-                        @endif
-                        <button type="submit" class="btn btn-{{ $isRunning ? "danger" : "primary" }} btn-rounded">{{ $isRunning ? "Stop Scraper" : "Start Scraper" }}</button>
-                    </form>
-                    <form method="post" action="{{ route('session.update.pattern') }}">
+                    <form method="post" action="{{ route('session.start') }}">
                         <div class="form-group row mt-3">
                             @csrf
                             <label class="col-sm-2 col-form-label" for="inputEmail3">Scraper Pattern</label>
                             <div class="col-sm-8">
-                                <input class="form-control" type="text" name="pattern" placeholder="Pattern EX: 9*******" value="{{ $setting?->pattern ?: env('SCRAPPER_PATTERN') }}">
+                                <input class="form-control" type="text" name="pattern" placeholder="Pattern EX: 9*******">
                             </div>
                             <div class="col-sm-2">
-                                <button type="submit" class="btn btn-primary btn-block">Set Pattern</button>
+                                <button type="submit" class="btn btn-primary btn-rounded">New Scraper</button>
                             </div>
                         </div>
                     </form>
@@ -51,6 +42,7 @@
                                     <th>End</th>
                                     <th>Data Collected</th>
                                     <th>Time Taken</th>
+                                    <th>Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -62,6 +54,15 @@
                                         <td>{{ $session->end }}</td>
                                         <td>{{ $session->data()->count() }}</td>
                                         <td>{{ \Carbon\CarbonInterval::seconds( $session->time )->cascade()->forHumans(null, true)  }}</td>
+                                        <td>
+                                            @if ($session->is_running)
+                                            <form action="{{ route('session.stop', $session->id) }}" method="POST" >
+                                                @csrf
+                                                @method('PUT')
+                                                <button type="submit" class="btn btn-danger btn-rounded">Stop Scraper</button>
+                                            </form>
+                                            @endif
+                                        </td>
                                     </tr>
                                 @endforeach
                                 </tbody>

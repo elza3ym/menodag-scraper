@@ -44,19 +44,18 @@ class SessionController extends Controller
      */
     public function store(Request $request)
     {
-        $session = Session::where('is_running', 1)->first();
-        if (!$session) {
-            $oldSession = Session::latest()->first();
-            $session = new Session([
-                'pattern' => Setting::all()?->first()?->pattern ?: env('SCRAPPER_PATTERN'),
-                'is_running'    => 1,
-                'time'      => 0,
-            ]);
-            if ($oldSession?->pattern === $session->pattern) {
-                $session->current_number =  $oldSession->current_number;
-            }
-            $session->save();
+        $oldSession = Session::where(['pattern' => $request->pattern])->latest()?->first();
+
+        $session = new Session([
+            'pattern' =>  $request->pattern,
+            'is_running'    => 1,
+            'time'      => 0,
+        ]);
+        if ($oldSession) {
+            $session->current_number =  $oldSession->current_number;
         }
+        $session->save();
+
         if (!$session->current_number) {
             $session->current_number = Data::getNumber($session->pattern);
         } else {
