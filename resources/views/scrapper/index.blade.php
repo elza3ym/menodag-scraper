@@ -40,7 +40,6 @@
                                     <th>Running ?</th>
                                     <th>Start</th>
                                     <th>End</th>
-                                    <th>Data Collected</th>
                                     <th>Time Taken</th>
                                     <th>Action</th>
                                 </tr>
@@ -52,7 +51,6 @@
                                         <td>{{ $session->is_running ? "Yes": "No" }}</td>
                                         <td>{{ $session->start }}</td>
                                         <td>{{ $session->end }}</td>
-                                        <td>{{ $session->data()->count() }}</td>
                                         <td>{{ \Carbon\CarbonInterval::seconds( $session->time )->cascade()->forHumans(null, true)  }}</td>
                                         <td>
                                             @if ($session->is_running)
