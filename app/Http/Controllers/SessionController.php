@@ -20,10 +20,7 @@ class SessionController extends Controller
     {
         //
         $sessions = Session::orderBy('is_running', 'DESC')->paginate(25);
-        $isRunning = Session::isRunning();
-        $setting = Setting::all()?->first();
-
-        return view('scrapper.index', compact('sessions', 'isRunning', 'setting'));
+        return view('scrapper.index', compact('sessions'));
     }
 
     /**
