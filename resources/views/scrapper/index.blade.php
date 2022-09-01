@@ -40,17 +40,23 @@
                                     <th>Running ?</th>
                                     <th>Start</th>
                                     <th>End</th>
+                                    <th>Data Collected</th>
                                     <th>Time Taken</th>
                                     <th>Action</th>
                                 </tr>
                                 </thead>
-                                <tbody>
+                                <tbody class="text-center">
                                 @foreach($sessions as $session)
                                     <tr>
                                         <td>{{ $session->pattern }}</td>
                                         <td>{{ $session->is_running ? "Yes": "No" }}</td>
                                         <td>{{ $session->start }}</td>
                                         <td>{{ $session->end }}</td>
+                                        <td>
+                                            <button class="btn btn-success btn-block" type="button" data-toggle="popover"  data-trigger="focus" data-session-id="{{ $session->id }}" title="Collected Data">
+                                                <i class="i-Eye"></i>
+                                            </button>
+                                        </td>
                                         <td>{{ \Carbon\CarbonInterval::seconds( $session->time )->cascade()->forHumans(null, true)  }}</td>
                                         <td>
                                             @if ($session->is_running)
@@ -77,4 +83,20 @@
         </div>
     </div>
     <!-- end of main-content -->
+@endsection
+@section('scripts')
+    <script>
+        $("[data-toggle=popover]").on('click', function () {
+            let sessionId = $(this).data('sessionId');
+            $.ajax({
+                url: '{{ route('session.start') }}' + '/' + sessionId + '/count',
+                method: 'get',
+                success: function (data) {
+                    $("[data-toggle=popover][data-session-id="+sessionId+"]").popover({
+                        content: data
+                    }).popover('show')
+                }
+            })
+        });
+    </script>
 @endsection

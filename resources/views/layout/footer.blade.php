@@ -23,6 +23,7 @@
 <script src="/assets/js/scripts/echart.options.min.js"></script>
 <script src="/assets/js/scripts/dashboard.v1.script.min.js"></script>
 <script src="/assets/js/scripts/customizer.script.min.js"></script>
+@yield('scripts')
 </body>
 
 </html>

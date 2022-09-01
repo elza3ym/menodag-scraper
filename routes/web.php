@@ -21,6 +21,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/data/download', [App\Http\Controllers\DataController::class, 'download'])->name('data.download');
     Route::get('/scraper', [App\Http\Controllers\SessionController::class, 'index'])->name('session.index');
     Route::put('/scraper/{session}', [App\Http\Controllers\SessionController::class, 'update'])->name('session.stop');
+    Route::get('/scraper/{session}/count', [App\Http\Controllers\SessionController::class, 'getDataCount'])->name('session.count');
     Route::post('/scraper', [App\Http\Controllers\SessionController::class, 'store'])->name('session.start');
     Route::post('/scraper/pattern', [App\Http\Controllers\SessionController::class, 'updatePattern'])->name('session.update.pattern');
 

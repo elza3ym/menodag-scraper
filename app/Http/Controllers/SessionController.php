@@ -19,8 +19,20 @@ class SessionController extends Controller
     public function index()
     {
         //
-        $sessions = Session::orderBy('is_running', 'DESC')->paginate(25);
+        $sessions = Session::orderBy('is_running', 'DESC')->orderBy('id')->paginate(25);
         return view('scrapper.index', compact('sessions'));
+    }
+
+    /**
+     * Display a count of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getDataCount(Session $session)
+    {
+        //
+        $count = $session->data()->count();
+        return $count;
     }
 
     /**
